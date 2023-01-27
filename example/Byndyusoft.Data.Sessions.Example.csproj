@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+	  <LangVersion>9.0</LangVersion>
+	  <Nullable>enable</Nullable>
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.0.123" />
+    <PackageReference Include="FluentMigrator.Runner" Version="3.3.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.2" />
+    <PackageReference Include="Scrutor" Version="4.2.0" />
+    <PackageReference Include="System.Linq.Async" Version="6.0.1" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="7.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\src\Byndyusoft.Data.EntityFramework\Byndyusoft.Data.EntityFramework.csproj" />
+    <ProjectReference Include="..\src\Byndyusoft.Data.NHibernate\Byndyusoft.Data.NHibernate.csproj" />
+    <ProjectReference Include="..\src\Byndyusoft.Data.Redis\Byndyusoft.Data.Redis.csproj" />
+    <ProjectReference Include="..\src\Byndyusoft.Data.Sessions\Byndyusoft.Data.Sessions.csproj" />
+  </ItemGroup>
+
+</Project>
