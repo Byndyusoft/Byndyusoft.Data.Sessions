@@ -13,7 +13,7 @@ public static class SessionsServiceCollectionExtensions
 
         services.TryAddSingleton<ISessionAccessor, SessionAccessor>();
         services.TryAddSingleton<ISessionFactory, SessionFactory>();
-        services.TryAddSingleton<ISessionStorage, SessionStorage>();
+        services.TryAddSingleton<ISessionStorage, AsyncLocalSessionStorage>();
 
         return services;
     }

@@ -3,7 +3,7 @@ using System.Threading;
 
 namespace Byndyusoft.Data.Sessions;
 
-public class SessionStorage : ISessionStorage
+public class AsyncLocalSessionStorage : ISessionStorage
 {
     // ReSharper disable once InconsistentNaming
     private static readonly AsyncLocal<Wrapper?> _current = new();
