@@ -26,7 +26,7 @@ jobs:
       - name: build
         run: dotnet build
         
-      - name: publish Byndyusoft.Data.Sessions
+      - name: publish Byndyusoft.Data.Sessions.Abstractions
         uses: alirezanet/publish-nuget@v3.0.0
         with:
           PROJECT_FILE_PATH: src/Byndyusoft.Data.Sessions.Abstractions/Byndyusoft.Data.Sessions.Abstractions.csproj
