@@ -49,7 +49,7 @@ namespace Byndyusoft.Data.Sessions.Example
             }
 
             var services = new ServiceCollection()
-                .AddSessions()
+                .AddDataSessions()
                 .AddRedisDataAccess("localhost")
                 //.AddNhDataAccess("data source=nh.db")
                 .AddEfDataAccess("data source=ef.db")

@@ -7,7 +7,7 @@ namespace Microsoft.Extensions.DependencyInjection;
 
 public static class SessionsServiceCollectionExtensions
 {
-    public static IServiceCollection AddSessions(this IServiceCollection services)
+    public static IServiceCollection AddDataSessions(this IServiceCollection services)
     {
         if (services == null) throw new ArgumentNullException(nameof(services));
 

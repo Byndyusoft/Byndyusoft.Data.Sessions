@@ -1,4 +1,4 @@
-using System;
+using CommunityToolkit.Diagnostics;
 
 namespace Byndyusoft.Data.Sessions;
 
@@ -8,8 +8,10 @@ public class SessionAccessor : ISessionAccessor
         
     public SessionAccessor(ISessionStorage sessionStorage)
     {
+        Guard.IsNotNull(sessionStorage, nameof(sessionStorage));
+
         _sessionStorage = sessionStorage;
     }
 
-    public ISession Session => _sessionStorage.GetCurrent()  ?? throw new InvalidOperationException("There is no current Session");
+    public ISession? Session => _sessionStorage.GetCurrent();
 }

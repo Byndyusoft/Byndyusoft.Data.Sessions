@@ -5,6 +5,10 @@
 		<RootNamespace>Byndyusoft.Data.Sessions</RootNamespace>
 	</PropertyGroup>
 
+	<ItemGroup>
+		<PackageReference Include="CommunityToolkit.Diagnostics" Version="8.0.0" />
+	</ItemGroup>
+
 	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
 		<PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="1.0.0" />
 	</ItemGroup>

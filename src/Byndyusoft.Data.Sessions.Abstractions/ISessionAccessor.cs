@@ -11,5 +11,5 @@ public interface ISessionAccessor
     ///     Gets the current <see cref="ISession" />.
     /// </summary>
     /// <exception cref="InvalidOperationException">If there is no active <see cref="ISession" /></exception>
-    ISession Session { get; }
+    ISession? Session { get; }
 }

@@ -1,3 +1,4 @@
+using CommunityToolkit.Diagnostics;
 using System.Data;
 
 namespace Byndyusoft.Data.Sessions;
@@ -8,6 +9,8 @@ public class SessionFactory : ISessionFactory
 
     public SessionFactory(ISessionStorage sessionStorage)
     {
+        Guard.IsNotNull(sessionStorage, nameof(sessionStorage));
+
         _sessionStorage = sessionStorage;
     }
 
