@@ -29,5 +29,25 @@ public interface ISession : IDisposable, IAsyncDisposable
     /// </summary>
     /// <param name="key">The <paramref name="key"/>.</param>
     /// <param name="dependentSession">The <paramref name="dependentSession"/>.</param>
-    void Enlist(string key, IDependentSession dependentSession);
+    bool Enlist(string key, IDependentSession dependentSession);
+
+    /// <summary>
+    /// Enlists an dependentSession to participate in a <see cref="ISession"/>.
+    /// </summary>
+    /// <param name="key">The <paramref name="key"/>.</param>
+    /// <param name="dependentSession">The <paramref name="dependentSession"/>.</param>
+    /// <param name="disposeDependentSessionOnUnsuccess">If <b>true</b> and enlisting is unsuccess than disposes <paramref name="dependentSession"/>.</param>
+    bool Enlist(string key, IDependentSession dependentSession, bool disposeDependentSessionOnUnsuccess)
+    {
+        if (Enlist(key, dependentSession)) 
+            return true;
+
+        if (disposeDependentSessionOnUnsuccess)
+        {
+            dependentSession.Dispose();
+        }
+       
+        return false;
+
+    }
 }

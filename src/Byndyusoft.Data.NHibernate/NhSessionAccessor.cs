@@ -1,27 +1,25 @@
 using Byndyusoft.Data.Sessions;
-using System;
 
 namespace Byndyusoft.Data.NHibernate
 {
-    internal class NhSessionAccessor : INhSessionAccessor
+    internal class NhSessionAccessor : SessionConsumer, INhSessionAccessor
     {
         private readonly string _key = nameof(NhSession);
-        private readonly ISessionAccessor _sessionAccessor;
         private readonly NhSessionFactory _sessionFactory;
 
         public NhSessionAccessor(ISessionAccessor sessionAccessor, NhSessionFactory sessionFactory)
+            : base(sessionAccessor)
         {
-            _sessionAccessor = sessionAccessor;
             _sessionFactory = sessionFactory;
         }
 
-        public global::NHibernate.ISession Session
+        public new global::NHibernate.ISession Session
         {
             get
             {
-                var session = _sessionAccessor.Session;
+                var session = base.Session;
                 if (session.DependentSessions.TryGetValue(_key, out var nhSession) == false)
-                    session.Enlist(_key, nhSession = _sessionFactory.Create(session));
+                    session.Enlist(_key, nhSession = _sessionFactory.Create(session), true);
 
                 return ((NhSession) nhSession).Session!;
             }

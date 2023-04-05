@@ -25,6 +25,5 @@ public abstract class SessionConsumer
     ///     Gets the current <see cref="ISession" />.
     /// </summary>
     protected ISession Session => _sessionAccessor.Session ??
-                                      throw new InvalidOperationException(
-                                          $"There is no current {nameof(Session)}");
+                                      throw new InvalidOperationException($"There is no current {nameof(Session)}");
 }

@@ -42,8 +42,7 @@ internal class DependentSessions : ConcurrentDictionary<string, IDependentSessio
         GC.SuppressFinalize(this);
 
         foreach (var value in Values)
-            if (value is IDisposable disposable)
-                disposable.Dispose();
+            value.Dispose();
 
         Clear();
     }

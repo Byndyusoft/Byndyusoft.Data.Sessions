@@ -115,9 +115,9 @@ public class Session : ICommitableSession
         _activity?.AddEvent(new ActivityEvent(SessionEvents.RolledBack));
     }
 
-    public void Enlist(string key, IDependentSession dependentSession)
+    public bool Enlist(string key, IDependentSession dependentSession)
     {
-        _dependentSessions.TryAdd(key, dependentSession);
+        return _dependentSessions.TryAdd(key, dependentSession);
     }
 
     private async ValueTask DisposeAsyncCore()
