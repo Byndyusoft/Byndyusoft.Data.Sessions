@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -6,7 +7,7 @@ namespace Byndyusoft.Data.Sessions;
 /// <summary>
 ///     Represents a dependent session.
 /// </summary>
-public interface IDependentSession
+public interface IDependentSession : IDisposable
 {
     /// <summary>
     ///     Asynchronously commits the <see cref="IDependentSession" />.

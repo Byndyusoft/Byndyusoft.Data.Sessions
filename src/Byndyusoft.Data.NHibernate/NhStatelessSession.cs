@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Byndyusoft.Data.NHibernate
 {
-    internal class NhStatelessSession : IDependentSession, IDisposable
+    internal class NhStatelessSession : IDependentSession
     {
         private ITransaction? _transaction;
         private IStatelessSession? _session;

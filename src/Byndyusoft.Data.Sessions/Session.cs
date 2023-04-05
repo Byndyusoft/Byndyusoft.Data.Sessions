@@ -1,3 +1,4 @@
+using CommunityToolkit.Diagnostics;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -28,6 +29,8 @@ public class Session : ICommitableSession
         ISessionStorage sessionStorage,
         IsolationLevel isolationLevel = IsolationLevel.Unspecified) : this()
     {
+        Guard.IsNotNull(sessionStorage, nameof(sessionStorage));
+
         _sessionStorage = sessionStorage;
         _isolationLevel = isolationLevel;
     }
@@ -112,9 +115,9 @@ public class Session : ICommitableSession
         _activity?.AddEvent(new ActivityEvent(SessionEvents.RolledBack));
     }
 
-    public void Enlist(string key, IDependentSession dependentSession)
+    public bool Enlist(string key, IDependentSession dependentSession)
     {
-        _dependentSessions.TryAdd(key, dependentSession);
+        return _dependentSessions.TryAdd(key, dependentSession);
     }
 
     private async ValueTask DisposeAsyncCore()

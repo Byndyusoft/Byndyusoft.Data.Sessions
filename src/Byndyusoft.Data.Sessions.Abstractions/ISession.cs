@@ -29,5 +29,5 @@ public interface ISession : IDisposable, IAsyncDisposable
     /// </summary>
     /// <param name="key">The <paramref name="key"/>.</param>
     /// <param name="dependentSession">The <paramref name="dependentSession"/>.</param>
-    void Enlist(string key, IDependentSession dependentSession);
+    bool Enlist(string key, IDependentSession dependentSession);
 }

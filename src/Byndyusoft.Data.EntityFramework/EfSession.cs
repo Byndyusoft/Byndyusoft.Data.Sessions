@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Byndyusoft.Data.EntityFramework
 {
-    internal class EfSession<TContext> : IDependentSession, IDisposable, IAsyncDisposable where TContext : DbContext
+    internal class EfSession<TContext> : IDependentSession, IAsyncDisposable where TContext : DbContext
     {
         public EfSession(TContext context)
         {

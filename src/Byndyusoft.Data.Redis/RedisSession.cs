@@ -45,6 +45,6 @@ namespace Byndyusoft.Data.Redis
 
         public ValueTask CommitAsync(CancellationToken _) => new ValueTask();
 
-        public async ValueTask RollbackAsync(CancellationToken _) => new ValueTask();
+        public ValueTask RollbackAsync(CancellationToken _) => new ValueTask();
     }
 }

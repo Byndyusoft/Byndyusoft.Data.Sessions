@@ -1,17 +1,16 @@
-﻿using Byndyusoft.Data.Sessions;
+using Byndyusoft.Data.Sessions;
 using StackExchange.Redis;
 
 namespace Byndyusoft.Data.Redis
 {
-    internal class RedisConnectionAccessor : IRedisConnectionAccessor
+    internal class RedisConnectionAccessor : SessionConsumer, IRedisConnectionAccessor
     {
         private readonly string _key = nameof(RedisSession);
         private readonly RedisSessionFactory _redisSessionFactory;
-        private readonly ISessionAccessor _sessionAccessor;
 
         public RedisConnectionAccessor(ISessionAccessor sessionAccessor, RedisSessionFactory redisSessionFactory)
+            : base(sessionAccessor)
         {
-            _sessionAccessor = sessionAccessor;
             _redisSessionFactory = redisSessionFactory;
         }
 
@@ -19,11 +18,9 @@ namespace Byndyusoft.Data.Redis
         {
             get
             {
-                var session = _sessionAccessor.Session;
-                if (session.DependentSessions.TryGetValue(_key, out var redisSession) == false)
-                    session.Enlist(_key, redisSession = _redisSessionFactory.CreateSession());
-
-                return ((RedisSession)redisSession).Connection;
+                var session = Session;
+                var redisSession = session.GetOrEnlist(_key, () => _redisSessionFactory.CreateSession());
+                return redisSession.Connection;
             }
         }
     }
