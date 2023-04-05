@@ -19,10 +19,8 @@ namespace Byndyusoft.Data.Redis
             get
             {
                 var session = Session;
-                if (session.DependentSessions.TryGetValue(_key, out var redisSession) == false)
-                    session.Enlist(_key, redisSession = _redisSessionFactory.CreateSession(), true);
-
-                return ((RedisSession)redisSession).Connection;
+                var redisSession = session.GetOrEnlist(_key, () => _redisSessionFactory.CreateSession());
+                return redisSession.Connection;
             }
         }
     }

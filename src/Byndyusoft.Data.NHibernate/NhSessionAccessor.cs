@@ -18,10 +18,8 @@ namespace Byndyusoft.Data.NHibernate
             get
             {
                 var session = base.Session;
-                if (session.DependentSessions.TryGetValue(_key, out var nhSession) == false)
-                    session.Enlist(_key, nhSession = _sessionFactory.Create(session), true);
-
-                return ((NhSession) nhSession).Session!;
+                var nhSession = session.GetOrEnlist(_key, () => _sessionFactory.Create(session));
+                return nhSession.Session!;
             }
         }
     }

@@ -47,5 +47,16 @@ namespace Byndyusoft.Data.Sessions.Example.Dapper
 
             GC.SuppressFinalize(this);
         }
+
+        public void Dispose()
+        {
+            Transaction?.Dispose();
+            Transaction = null;
+
+            Connection?.Dispose();
+            Connection = null;
+
+            GC.SuppressFinalize(this);
+        }
     }
 }

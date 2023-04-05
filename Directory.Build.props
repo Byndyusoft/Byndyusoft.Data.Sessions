@@ -1,6 +1,6 @@
 <Project>
   <PropertyGroup>
-    <Version>0.1.1</Version>
+    <Version>0.2.0</Version>
     <Authors>Byndyusoft</Authors>
     <PackageTags>Byndyusoft;Data;Sessions</PackageTags>
     <RepositoryUrl>https://github.com/Byndyusoft/Byndyusoft.Data.Sessions</RepositoryUrl>

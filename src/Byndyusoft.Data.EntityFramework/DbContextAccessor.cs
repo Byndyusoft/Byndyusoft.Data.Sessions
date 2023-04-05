@@ -19,10 +19,8 @@ namespace Byndyusoft.Data.EntityFramework
             get
             {
                 var session = Session;
-                if (session.DependentSessions.TryGetValue(Key, out var efSession) == false)
-                    session.Enlist(Key, efSession = _efSessionFactory.CreateSession(session), true);
-
-                return ((EfSession<TContext>)efSession).Context!;
+                var efSession = session.GetOrEnlist(Key, () => _efSessionFactory.CreateSession(session));
+                return efSession.Context!;
             }
         }
     }
