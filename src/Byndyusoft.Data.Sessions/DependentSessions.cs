@@ -28,7 +28,19 @@ internal class DependentSessions : ConcurrentDictionary<string, IDependentSessio
     public async Task CommitAsync(CancellationToken cancellationToken = default)
     {
         foreach (var session in Values)
-            await session.CommitAsync(cancellationToken).ConfigureAwait(false);
+        {
+            using var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+
+            try
+            {
+                await session.CommitAsync(cts.Token).ConfigureAwait(false);
+            }
+            catch
+            {
+                cts.Cancel();
+                throw;
+            }
+        }
     }
 
     public async Task RollbackAsync(CancellationToken cancellationToken = default)
