@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Byndyusoft.Data.Sessions.Example.Dapper
 {
@@ -19,6 +19,11 @@ namespace Byndyusoft.Data.Sessions.Example.Dapper
             get
             {
                 var session = _sessionAccessor.Session;
+                if (session == null)
+                {
+                    throw new InvalidOperationException("No current session");
+                }
+
                 if (session.DependentSessions.TryGetValue(_key, out var dapperSession) == false)
                     session.Enlist(_key, dapperSession = _sessionFactory.Create(session));
 

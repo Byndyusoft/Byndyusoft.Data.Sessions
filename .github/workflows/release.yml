@@ -14,12 +14,12 @@ jobs:
         uses: actions/checkout@master
            
       - name: install dotnet 3.1
-        uses: actions/setup-dotnet@v1
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 3.1.x
 
       - name: install dotnet 6.0
-        uses: actions/setup-dotnet@v1
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 6.0.x
           
@@ -27,7 +27,7 @@ jobs:
         run: dotnet build
         
       - name: publish Byndyusoft.Data.Sessions.Abstractions
-        uses: alirezanet/publish-nuget@v3.0.0
+        uses: alirezanet/publish-nuget@v3.1.0
         with:
           PROJECT_FILE_PATH: src/Byndyusoft.Data.Sessions.Abstractions/Byndyusoft.Data.Sessions.Abstractions.csproj
           VERSION_FILE_PATH: Directory.Build.props
@@ -37,7 +37,7 @@ jobs:
           INCLUDE_SYMBOLS: true
 
       - name: publish Byndyusoft.Data.Sessions
-        uses: alirezanet/publish-nuget@v3.0.0
+        uses: alirezanet/publish-nuget@v3.1.0
         with:
           PROJECT_FILE_PATH: src/Byndyusoft.Data.Sessions/Byndyusoft.Data.Sessions.csproj
           VERSION_FILE_PATH: Directory.Build.props
@@ -47,7 +47,7 @@ jobs:
           INCLUDE_SYMBOLS: true
 
       - name: publish Byndyusoft.Data.Sessions.OpenTelemetry
-        uses: alirezanet/publish-nuget@v3.0.0
+        uses: alirezanet/publish-nuget@v3.1.0
         with:
           PROJECT_FILE_PATH: src/Byndyusoft.Data.Sessions.OpenTelemetry/Byndyusoft.Data.Sessions.OpenTelemetry.csproj
           VERSION_FILE_PATH: Directory.Build.props
