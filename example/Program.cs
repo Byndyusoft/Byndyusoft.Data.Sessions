@@ -62,7 +62,7 @@ namespace Byndyusoft.Data.Sessions.Example
             var dapperRepository = services.GetRequiredService<DapperPeopleRepository>();
 
             {
-                await using var writeSession = sessionFactory.CreateCommitableSession();
+                await using var writeSession = sessionFactory.CreateCommittableSession();
 
                 //await nhRepository.AddAsync(1, "nh_people_1");
                 //await nhRepository.AddAsync(2, "nh_people_2");
@@ -77,7 +77,7 @@ namespace Byndyusoft.Data.Sessions.Example
             }
 
             {
-                await using var failedSession = sessionFactory.CreateCommitableSession();
+                await using var failedSession = sessionFactory.CreateCommittableSession();
 
                 //await nhRepository.AddAsync(3, "nh_people_3");
                 await efRepository.AddAsync(3, "ef_people_3");

@@ -18,7 +18,7 @@ namespace Byndyusoft.Data.EntityFramework
         {
             var context = _serviceProvider.GetRequiredService<TContext>();
 
-            if (session is ICommitableSession)
+            if (session is ICommittableSession)
                 try
                 {
                     context.Database.BeginTransaction();

@@ -26,19 +26,19 @@ public interface ISessionFactory
 
 
     /// <summary>
-    ///     Returns a new instance of the commitable  session's class that implements the <see cref="ICommitableSession" /> interface.
+    ///     Returns a new instance of the Committable  session's class that implements the <see cref="ICommittableSession" /> interface.
     /// </summary>
-    /// <returns>A new instance of <see cref="ICommitableSession" />.</returns>
-    ICommitableSession CreateCommitableSession();
+    /// <returns>A new instance of <see cref="ICommittableSession" />.</returns>
+    ICommittableSession CreateCommittableSession();
 
     /// <summary>
-    ///     Returns a new instance of the commitable  session's class that implements the <see cref="ICommitableSession" /> interface
+    ///     Returns a new instance of the Committable  session's class that implements the <see cref="ICommittableSession" /> interface
     ///     with specified <see cref="IsolationLevel" />.
     /// </summary>
     /// <param name="isolationLevel">
     ///     One of the enumeration values that specifies the isolation level for the transaction to
     ///     use.
     /// </param>
-    /// <returns>A new instance of <see cref="ICommitableSession" />.</returns>
-    ICommitableSession CreateCommitableSession(IsolationLevel isolationLevel);
+    /// <returns>A new instance of <see cref="ICommittableSession" />.</returns>
+    ICommittableSession CreateCommittableSession(IsolationLevel isolationLevel);
 }

@@ -14,4 +14,8 @@
 		<ProjectReference Include="..\Byndyusoft.Data.Sessions.Abstractions\Byndyusoft.Data.Sessions.Abstractions.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Internals\" />
+	</ItemGroup>
+
 </Project>

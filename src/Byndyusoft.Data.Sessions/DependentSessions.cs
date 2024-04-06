@@ -1,7 +1,10 @@
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Byndyusoft.Data.Sessions.Internals;
 
 namespace Byndyusoft.Data.Sessions;
 
@@ -11,7 +14,7 @@ internal class DependentSessions : ConcurrentDictionary<string, IDependentSessio
     {
         GC.SuppressFinalize(this);
 
-        foreach (var value in Values)
+        foreach (var value in Sessions)
             switch (value)
             {
                 case IAsyncDisposable asyncDisposable:
@@ -27,7 +30,7 @@ internal class DependentSessions : ConcurrentDictionary<string, IDependentSessio
 
     public async Task CommitAsync(CancellationToken cancellationToken = default)
     {
-        foreach (var session in Values)
+        foreach (var session in OrderedSessions)
         {
             using var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
 
@@ -45,17 +48,34 @@ internal class DependentSessions : ConcurrentDictionary<string, IDependentSessio
 
     public async Task RollbackAsync(CancellationToken cancellationToken = default)
     {
-        foreach (var session in Values)
-            await session.RollbackAsync(cancellationToken).ConfigureAwait(false);
+        foreach (var session in OrderedSessions)
+        {
+            using var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+
+            try
+            {
+                await session.RollbackAsync(cts.Token).ConfigureAwait(false);
+            }
+            catch
+            {
+                cts.Cancel();
+                throw;
+            }
+        }
     }
 
     public void Dispose()
     {
         GC.SuppressFinalize(this);
 
-        foreach (var value in Values)
+        foreach (var value in Sessions)
             value.Dispose();
 
         Clear();
     }
+    
+    private IEnumerable<IDependentSession> Sessions => Values;
+
+    private IEnumerable<IDependentSession> OrderedSessions =>
+        Sessions.OrderBy(session => session.GetOrder());
 }

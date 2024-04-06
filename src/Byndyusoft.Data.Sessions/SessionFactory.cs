@@ -1,5 +1,5 @@
 using CommunityToolkit.Diagnostics;
-using System.Data;
+using IsolationLevel = System.Data.IsolationLevel;
 
 namespace Byndyusoft.Data.Sessions;
 
@@ -16,7 +16,8 @@ public class SessionFactory : ISessionFactory
 
     public virtual ISession CreateSession()
     {
-        return CreateSession(IsolationLevel.Unspecified);
+        var session = new Session(_sessionStorage);
+        return StartCore<ISession>(session);
     }
 
     public virtual ISession CreateSession(IsolationLevel isolationLevel)
@@ -25,15 +26,15 @@ public class SessionFactory : ISessionFactory
         return StartCore<ISession>(session);
     }
 
-    public ICommitableSession CreateCommitableSession()
+    public ICommittableSession CreateCommittableSession()
     {
-        return CreateCommitableSession(IsolationLevel.Unspecified);
+        return CreateCommittableSession(IsolationLevel.Unspecified);
     }
 
-    public virtual ICommitableSession CreateCommitableSession(IsolationLevel isolationLevel)
+    public virtual ICommittableSession CreateCommittableSession(IsolationLevel isolationLevel)
     {
         var session = new Session(_sessionStorage, isolationLevel);
-        return StartCore<ICommitableSession>(session);
+        return StartCore<ICommittableSession>(session);
     }
 
     private static T StartCore<T>(Session session)
