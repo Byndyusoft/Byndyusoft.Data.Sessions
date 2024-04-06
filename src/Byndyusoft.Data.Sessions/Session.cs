@@ -4,30 +4,28 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace Byndyusoft.Data.Sessions;
 
-public class Session : ICommitableSession
+public class Session : ISession
 {
-    private readonly IsolationLevel _isolationLevel;
     private static readonly ActivitySource ActivitySource = SessionTracingOptions.CreateActivitySource();
 
-    private bool _completed;
     private bool _disposed;
-    private DependentSessions _dependentSessions = new ();
+    internal DependentSessions _dependentSessions = new ();
     private ConcurrentDictionary<string,object>? _items;
-    private Activity? _activity;
+    protected Activity? _activity;
+    private readonly IsolationLevel? _isolationLevel;
     private readonly ISessionStorage _sessionStorage = default!;
 
     protected Session()
     {
     }
 
-    internal Session(
+    protected internal Session(
         ISessionStorage sessionStorage,
-        IsolationLevel isolationLevel = IsolationLevel.Unspecified) : this()
+        IsolationLevel? isolationLevel = null) : this()
     {
         Guard.IsNotNull(sessionStorage, nameof(sessionStorage));
 
@@ -59,7 +57,7 @@ public class Session : ICommitableSession
         DisposeCore();
     }
 
-    public IsolationLevel IsolationLevel => _isolationLevel;
+    public IsolationLevel? IsolationLevel => _isolationLevel;
 
     public IDictionary<string, object> Items => _items ??= new ConcurrentDictionary<string, object>();
 
@@ -81,38 +79,6 @@ public class Session : ICommitableSession
         _activity = ActivitySource.StartActivity(nameof(Session));
         _activity?.SetTag("isolationlevel", _isolationLevel);
         _activity?.AddEvent(new ActivityEvent(SessionEvents.Started));
-    }
-
-    public async Task CommitAsync(CancellationToken cancellationToken = default)
-    {
-        ThrowIfDisposed();
-
-        if (_completed)
-            return;
-
-        _activity?.AddEvent(new ActivityEvent(SessionEvents.Committing));
-
-        await _dependentSessions.CommitAsync(cancellationToken)
-            .ConfigureAwait(false);
-
-        _completed = true;
-        _activity?.AddEvent(new ActivityEvent(SessionEvents.Commited));
-    }
-
-    public async Task RollbackAsync(CancellationToken cancellationToken = default)
-    {
-        ThrowIfDisposed();
-
-        if (_completed)
-            return;
-
-        _activity?.AddEvent(new ActivityEvent(SessionEvents.RollingBack));
-
-        await _dependentSessions.RollbackAsync(cancellationToken)
-            .ConfigureAwait(false);
-
-        _completed = true;
-        _activity?.AddEvent(new ActivityEvent(SessionEvents.RolledBack));
     }
 
     public bool Enlist(string key, IDependentSession dependentSession)
@@ -137,7 +103,7 @@ public class Session : ICommitableSession
         _activity = null;
     }
 
-    private void ThrowIfDisposed()
+    protected void ThrowIfDisposed()
     {
         if (_disposed)
             throw new ObjectDisposedException(GetType().FullName);

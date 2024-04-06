@@ -19,7 +19,7 @@ namespace Byndyusoft.Data.Sessions.Example.Dapper
             connection.ConnectionString = _connectionString;
             connection.Open();
             
-            if (session is not ICommitableSession committable)
+            if (session is not ICommittableSession committable)
                 return new DapperSession(connection);
 
             try

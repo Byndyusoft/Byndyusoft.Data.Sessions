@@ -16,12 +16,12 @@ namespace Byndyusoft.Data.NHibernate
         {
             var nhSession = _sessionFactory.OpenSession();
 
-            if (session is not ICommitableSession commitable)
+            if (session is not ICommittableSession Committable)
                 return new NhSession(nhSession, null);
 
             try
             {
-                var nhTransaction = nhSession.BeginTransaction(commitable.IsolationLevel);
+                var nhTransaction = nhSession.BeginTransaction(Committable.IsolationLevel);
                 return new NhSession(nhSession, nhTransaction);
             }
             catch
@@ -35,12 +35,12 @@ namespace Byndyusoft.Data.NHibernate
         {
             var nhSession = _sessionFactory.OpenStatelessSession();
 
-            if (session is not ICommitableSession commitable)
+            if (session is not ICommittableSession Committable)
                 return new NhStatelessSession(nhSession, null);
 
             try
             {
-                var nhTransaction = nhSession.BeginTransaction(commitable.IsolationLevel);
+                var nhTransaction = nhSession.BeginTransaction(Committable.IsolationLevel);
                 return new NhStatelessSession(nhSession, nhTransaction);
             }
             catch

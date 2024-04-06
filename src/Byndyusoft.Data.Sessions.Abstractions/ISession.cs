@@ -12,7 +12,7 @@ public interface ISession : IDisposable, IAsyncDisposable
     /// <summary>
     ///     Gets the isolation level for this <see cref="ISession" />.
     /// </summary>
-    IsolationLevel IsolationLevel { get; }
+    IsolationLevel? IsolationLevel { get; }
 
     /// <summary>
     ///     Gets a collection of key/value pairs that provide additional information about the <see cref="ISession" />.
