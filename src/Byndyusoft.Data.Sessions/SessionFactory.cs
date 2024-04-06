@@ -16,14 +16,12 @@ public class SessionFactory : ISessionFactory
 
     public virtual ISession CreateSession()
     {
-        var session = new Session(_sessionStorage);
-        return StartCore<ISession>(session);
+        return CreateSessionCore(null);
     }
 
     public virtual ISession CreateSession(IsolationLevel isolationLevel)
     {
-        var session = new Session(_sessionStorage, isolationLevel);
-        return StartCore<ISession>(session);
+        return CreateSessionCore(isolationLevel);
     }
 
     public ICommittableSession CreateCommittableSession()
@@ -33,17 +31,26 @@ public class SessionFactory : ISessionFactory
 
     public virtual ICommittableSession CreateCommittableSession(IsolationLevel isolationLevel)
     {
-        var session = new Session(_sessionStorage, isolationLevel);
-        return StartCore<ICommittableSession>(session);
-    }
-
-    private static T StartCore<T>(Session session)
-        where T : ISession
-    {
+        var session = new CommittableSession(_sessionStorage, isolationLevel);
         try
         {
             session.Start();
-            return (T)(ISession)session;
+            return session;
+        }
+        catch
+        {
+            session.Dispose();
+            throw;
+        }
+    }
+
+    public virtual ISession CreateSessionCore(IsolationLevel? isolationLevel)
+    {
+        var session = new Session(_sessionStorage, isolationLevel);
+        try
+        {
+            session.Start();
+            return session;
         }
         catch
         {
